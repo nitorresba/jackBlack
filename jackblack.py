@@ -11,11 +11,11 @@ valores = {
 # Leer mazo desde CSV
 df = pd.read_csv("mazo_ascii.csv")
 
-# Leer carta oculta desde TXT
+# Leer carta cubierta desde TXT
 with open("carta cubierta.txt", "r") as f:
     carta_txt = f.read().strip()
 
-# Aquí defines el valor de la carta oculta según corresponda
+# se le da un valor a la carta oculta para que el dealer pueda calcular su valor correctamente
 carta_respaldo = {"ascii": carta_txt, "valor": "A"}  
 
 # Función para imprimir cartas lado a lado
@@ -52,7 +52,7 @@ def jugar_mano(mano, nombre="Jugador"):
             break
     return mano
 
-# Turno del dealer (roba hasta 17)
+# Turno del dealer (que tome cartas hasta 17 como dijo nick)
 def turno_dealer(mano):
     while calcular_valor(mano) < 17:
         mano.append(df.sample(1).to_dict(orient="records")[0])
@@ -99,7 +99,7 @@ dealer = turno_dealer(dealerfinal)
 # Comparación final
 print("\n=== Fin de la ronda ===")
 print("Dealer (descubierto):")
-# Aquí mostramos todas las cartas reales del dealer (incluyendo la oculta del respaldo)
+# Aquí mostramos todas las cartas reales del dealer 
 print("Dealer:")
 imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in dealerfinal])
 
