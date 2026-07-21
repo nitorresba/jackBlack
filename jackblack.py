@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+import webbrowser
 
 # Valores de Blackjack
 valores = {
@@ -57,7 +58,9 @@ def elegir_apuesta(saldo):
         disponibles.append("ALL-IN")
     print("Fichas disponibles:", ", ".join(disponibles))
     while True:
-        eleccion = "$" + input("¿Con qué ficha quieres apostar? ").strip().upper()
+        eleccion = input("¿Con qué ficha quieres apostar? ").strip().upper()
+        if eleccion != "ALL-IN":
+            eleccion = f"${eleccion.replace('$', '')}"
         if eleccion not in disponibles:
             print("Esa ficha no la tienes disponible, intenta de nuevo.")
             continue
@@ -143,54 +146,65 @@ def guardar_puntaje(nombre, saldo, archivo="puntajes.txt"):
         print(f"{i}. {jugador} - ${puntos}")
 
 # --- Juego principal ---
-saldo = 1000
-print("=== Bienvenido a Jack Black ===")
-print(f"Empiezas con ${saldo} en fichas.\n")
-nombre = input("Ingresa tu nombre: ")
+def menu():
+    print("=== Bienvenido a JackBlack ===\n\nIngresa una de las siguientes opciones:")
+    opcion = input("Reglas\nJugar\nSalir\n\n")
+    match opcion:
+        case "reglas":
+            print("las reglas")
+        case "jugar":
+            saldo = 1000
+            print(f"Empiezas con ${saldo} en fichas.\n")
+            nombre = input("Ingresa tu nombre: ")
+            while saldo > 0:
+                apuesta = elegir_apuesta(saldo)
+                jugador = df.sample(2).to_dict(orient="records")
+                dealer_visible = df.sample(1).to_dict(orient="records")[0]
+                dealer_oculta = df.sample(1).to_dict(orient="records")[0]  # esta es la carta real que está boca abajo
+                dealer = [dealer_visible, carta_respaldo]  # lo que ve el jugador mientras juega su mano
 
-while saldo > 0:
-    apuesta = elegir_apuesta(saldo)
+                print("\n=== Mano inicial ===")
 
-    jugador = df.sample(2).to_dict(orient="records")
-    dealer_visible = df.sample(1).to_dict(orient="records")[0]
-    dealer_oculta = df.sample(1).to_dict(orient="records")[0]  # esta es la carta real que está boca abajo
-    dealer = [dealer_visible, carta_respaldo]  # lo que ve el jugador mientras juega su mano
+                # Dealer muestra carta normal + oculta al lado
+                print("Dealer:")
+                imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in dealer])
 
-    print("\n=== Mano inicial ===")
+                # Jugador muestra sus dos cartas
+                print("Jugador:")
+                imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in jugador])
+                print(f"Total: {calcular_valor(jugador)}\n")
 
-    # Dealer muestra carta normal + oculta al lado
-    print("Dealer:")
-    imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in dealer])
+                # Turno del jugador
+                jugador = jugar_mano(jugador, "Jugador")
 
-    # Jugador muestra sus dos cartas
-    print("Jugador:")
-    imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in jugador])
-    print(f"Total: {calcular_valor(jugador)}\n")
+                # Dealer revela su carta oculta al final y pide si le hace falta
+                dealerfinal = turno_dealer([dealer_visible, dealer_oculta])
 
-    # Turno del jugador
-    jugador = jugar_mano(jugador, "Jugador")
+                # Comparación final
+                print("\n=== Fin de la ronda ===")
+                print("Dealer (descubierto):")
+                imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in dealerfinal])
+                print("Jugador:")
+                imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in jugador])
+                print(f"Total: {calcular_valor(jugador)}\n")
+                saldo = comparar(jugador, dealerfinal, saldo, apuesta)
 
-    # Dealer revela su carta oculta al final y pide si le hace falta
-    dealerfinal = turno_dealer([dealer_visible, dealer_oculta])
+                if saldo <= 0:
+                    print("Te quedaste sin fichas. Fin del juego.")
+                    guardar_puntaje(nombre, saldo)
+                    break
 
-    # Comparación final
-    print("\n=== Fin de la ronda ===")
-    print("Dealer (descubierto):")
-    imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in dealerfinal])
+                otra = input("¿Quieres jugar otra ronda? (s/n) ")
+                if otra.lower() != "s":
+                    print(f"\nGracias por jugar. Te vas con ${saldo}.")
+                    guardar_puntaje(nombre, saldo)
+                    webbrowser.open("https://youtu.be/41O_MydqxTU?si=_Q7YfHNm2PKNGFnj")
+                    break
+        case "salir":
+            return
+        case _:
+            print("novalido")
+            menu()
+            
 
-    print("Jugador:")
-    imprimir_cartas([c["ascii"].replace("\\n", "\n") for c in jugador])
-    print(f"Total: {calcular_valor(jugador)}\n")
-
-    saldo = comparar(jugador, dealerfinal, saldo, apuesta)
-
-    if saldo <= 0:
-        print("Te quedaste sin fichas. Fin del juego.")
-        guardar_puntaje(nombre, saldo)
-        break
-
-    otra = input("¿Quieres jugar otra ronda? (s/n) ")
-    if otra.lower() != "s":
-        print(f"\nGracias por jugar. Te vas con ${saldo}.")
-        guardar_puntaje(nombre, saldo)
-        break
+menu()
