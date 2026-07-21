@@ -57,7 +57,7 @@ def elegir_apuesta(saldo):
         disponibles.append("ALL-IN")
     print("Fichas disponibles:", ", ".join(disponibles))
     while True:
-        eleccion = input("¿Con qué ficha quieres apostar? ").strip().upper()
+        eleccion = "$" + input("¿Con qué ficha quieres apostar? ").strip().upper()
         if eleccion not in disponibles:
             print("Esa ficha no la tienes disponible, intenta de nuevo.")
             continue
