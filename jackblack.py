@@ -1,7 +1,7 @@
 import pandas as pd
-import random
+import os
 import webbrowser
-
+#os.system('cls' if os.name == 'nt' else 'clear')
 # Valores de Blackjack
 valores = {
     "A": 11, "2": 2, "3": 3, "4": 4, "5": 5,
@@ -52,7 +52,7 @@ def calcular_valor(mano):
 
 # Elegir con qué ficha se apuesta, según el saldo disponible
 def elegir_apuesta(saldo):
-    print(f"\nSaldo actual: ${saldo}")
+    print(f"Saldo actual: ${saldo}")
     disponibles = [f for f in fichas if f != "ALL-IN" and int(f.replace("$", "")) <= saldo]
     if saldo > 0:
         disponibles.append("ALL-IN")
@@ -66,6 +66,7 @@ def elegir_apuesta(saldo):
             continue
         break
     apuesta = saldo if eleccion == "ALL-IN" else int(eleccion.replace("$", ""))
+    os.system('cls' if os.name == 'nt' else 'clear')
     print(fichas[eleccion])
     return apuesta
 
@@ -77,12 +78,14 @@ def jugar_mano(mano, nombre="Jugador"):
             break
         accion = input("¿Quieres pedir carta (h) o plantarte (s)? ")
         if accion.lower() == "h":
+            os.system('cls' if os.name == 'nt' else 'clear')
             mano.append(df.sample(1).to_dict(orient="records")[0])
             cartas = [c["ascii"].replace("\\n", "\n") for c in mano]
             imprimir_cartas(cartas)
             total = calcular_valor(mano)
             print(f"{nombre} total: {total}\n")
-        else:
+        elif accion.lower() == "s":
+            os.system('cls' if os.name == 'nt' else 'clear')
             break
     return mano
 
@@ -131,32 +134,44 @@ def guardar_puntaje(nombre, saldo, archivo="puntajes.txt"):
                 puntajes[j] = puntajes[j + 1]
                 puntajes[j + 1] = aux
 
-    # Guardar solo el Top 5
-    archivo = open("puntajes.txt", "w")
-    for i in range(min(5, len(puntajes))):
-        archivo.write(f"{puntajes[i][0]},{puntajes[i][1]}\n")
-    archivo.close()
+    puntajes = puntajes[:5]
 
     archivo = open("puntajes.txt", "w")
     for jugador, puntos in puntajes:
         archivo.write(f"{jugador},{puntos}\n")
 
-    print("\n=== TOP PUNTAJES ===")
+def top_puntajes():
+    puntajes = []
+    with open("puntajes.txt", "r") as f:
+        for linea in f:
+            linea = linea.strip()
+            if linea:
+                jugador, puntos = linea.rsplit(",", 1)
+                puntajes.append((jugador, int(puntos)))
+    print("\n=== Top Puntajes ===")
     for i, (jugador, puntos) in enumerate(puntajes, start=1):
         print(f"{i}. {jugador} - ${puntos}")
 
 # --- Juego principal ---
 def menu():
-    print("=== Bienvenido a JackBlack ===\n\nIngresa una de las siguientes opciones:")
-    opcion = input("Reglas\nJugar\nSalir\n\n")
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("=== Bienvenido a JackBlack ===")
+    top_puntajes()
+    print("\nIngresa una de las siguientes opciones:")
+    opcion = input("\nReglas\nJugar\nSalir\n\n")
     match opcion:
         case "reglas":
-            print("las reglas")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("Presiona ENTER para continuar.")
+            input()
+            menu()
         case "jugar":
+            os.system('cls' if os.name == 'nt' else 'clear')
             saldo = 1000
             print(f"Empiezas con ${saldo} en fichas.\n")
             nombre = input("Ingresa tu nombre: ")
             while saldo > 0:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 apuesta = elegir_apuesta(saldo)
                 jugador = df.sample(2).to_dict(orient="records")
                 dealer_visible = df.sample(1).to_dict(orient="records")[0]
@@ -179,7 +194,7 @@ def menu():
 
                 # Dealer revela su carta oculta al final y pide si le hace falta
                 dealerfinal = turno_dealer([dealer_visible, dealer_oculta])
-
+                os.system('cls' if os.name == 'nt' else 'clear')
                 # Comparación final
                 print("\n=== Fin de la ronda ===")
                 print("Dealer (descubierto):")
@@ -201,10 +216,11 @@ def menu():
                     webbrowser.open("https://youtu.be/41O_MydqxTU?si=_Q7YfHNm2PKNGFnjju")
                     break
         case "salir":
+            os.system('cls' if os.name == 'nt' else 'clear')
             return
         case _:
-            print("novalido")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("No has ingresado una opción válida. Recuerda usar solo minúsculas y números.\nPresiona ENTER para continuar.")
+            input()
             menu()
-            
-
 menu()

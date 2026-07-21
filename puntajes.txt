@@ -1,11 +1,5 @@
 Nicolas,8000
 Gustavo Petro,1500
+cyber cp,1050
+javier,1005
 Juan,975
-Julian,975
-daniel\,950
-merequetenge,950
-John Linder,500
-Arturo,0
-Nicolas,0
-Gonzalo,0
-Nicolas,0
