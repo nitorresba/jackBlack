@@ -108,10 +108,45 @@ def comparar(jugador, dealer, saldo, apuesta):
     print(f"Saldo: ${saldo}\n")
     return saldo
 
+# guardar los puntajes mas altos
+def guardar_puntaje(nombre, saldo, archivo="puntajes.txt"):
+    puntajes = []
+
+    with open(archivo, "r") as f:
+        for linea in f:
+            linea = linea.strip()
+            if linea:
+                jugador, puntos = linea.rsplit(",", 1)
+                puntajes.append((jugador, int(puntos)))
+
+    puntajes.append((nombre, saldo))
+
+    for i in range(len(puntajes)):
+        for j in range(len(puntajes) - 1):
+            if puntajes[j][1] < puntajes[j + 1][1]:
+                aux = puntajes[j]
+                puntajes[j] = puntajes[j + 1]
+                puntajes[j + 1] = aux
+
+    # Guardar solo el Top 5
+    archivo = open("puntajes.txt", "w")
+    for i in range(min(5, len(puntajes))):
+        archivo.write(f"{puntajes[i][0]},{puntajes[i][1]}\n")
+    archivo.close()
+
+    archivo = open("puntajes.txt", "w")
+    for jugador, puntos in puntajes:
+        archivo.write(f"{jugador},{puntos}\n")
+
+    print("\n=== TOP PUNTAJES ===")
+    for i, (jugador, puntos) in enumerate(puntajes, start=1):
+        print(f"{i}. {jugador} - ${puntos}")
+
 # --- Juego principal ---
 saldo = 1000
 print("=== Bienvenido a Jack Black ===")
 print(f"Empiezas con ${saldo} en fichas.\n")
+nombre = input("Ingresa tu nombre: ")
 
 while saldo > 0:
     apuesta = elegir_apuesta(saldo)
@@ -151,9 +186,11 @@ while saldo > 0:
 
     if saldo <= 0:
         print("Te quedaste sin fichas. Fin del juego.")
+        guardar_puntaje(nombre, saldo)
         break
 
     otra = input("¿Quieres jugar otra ronda? (s/n) ")
     if otra.lower() != "s":
         print(f"\nGracias por jugar. Te vas con ${saldo}.")
+        guardar_puntaje(nombre, saldo)
         break

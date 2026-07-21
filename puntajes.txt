@@ -1,0 +1,8 @@
+Nicolas,8000
+Juan,975
+Julian,975
+John Linder,500
+Arturo,0
+Nicolas,0
+Gonzalo,0
+Nicolas,0
