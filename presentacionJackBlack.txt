@@ -1,0 +1,8 @@
+Integrantes:
+Daniel Santiago García González, dgarciagon@unal.edu.co
+Diego Andrés Villamil Segovia, dvillamils@unal.edu.co
+Nicolas Torres Barbosa, nitorresba@unal.edu.co
+
+Nombre del proyecto: JackBlack
+
+Descripción: Juego de Blackjack de un jugador contra el dealer, usando un sistema de apuesta, registro de puntajes y un menú de cartas con carácteres ASCII
