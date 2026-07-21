@@ -198,7 +198,7 @@ def menu():
                 if otra.lower() != "s":
                     print(f"\nGracias por jugar. Te vas con ${saldo}.")
                     guardar_puntaje(nombre, saldo)
-                    webbrowser.open("https://youtu.be/41O_MydqxTU?si=_Q7YfHNm2PKNGFnj")
+                    webbrowser.open("https://youtu.be/41O_MydqxTU?si=_Q7YfHNm2PKNGFnjju")
                     break
         case "salir":
             return
