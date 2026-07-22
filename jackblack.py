@@ -1,7 +1,9 @@
 import pandas as pd
 import os
 import webbrowser
-#os.system('cls' if os.name == 'nt' else 'clear')
+import textwrap
+# limpiar pantalla = os.system('cls' if os.name == 'nt' else 'clear')
+
 # Valores de Blackjack
 valores = {
     "A": 11, "2": 2, "3": 3, "4": 4, "5": 5,
@@ -89,7 +91,7 @@ def jugar_mano(mano, nombre="Jugador"):
             break
     return mano
 
-# Turno del dealer (que tome cartas hasta 17 como dijo nick)
+# Turno del dealer (que tome cartas hasta 17)
 def turno_dealer(mano):
     while calcular_valor(mano) < 17:
         mano.append(df.sample(1).to_dict(orient="records")[0])
@@ -162,7 +164,10 @@ def menu():
     match opcion:
         case "reglas":
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("Presiona ENTER para continuar.")
+            with open("reglas.txt", "r") as reglas:
+                texto = reglas.read()
+                print(textwrap.fill(texto, width=100))
+            print("\nPresiona ENTER para volver al menú principal.")
             input()
             menu()
         case "jugar":
@@ -178,7 +183,7 @@ def menu():
                 dealer_oculta = df.sample(1).to_dict(orient="records")[0]  # esta es la carta real que está boca abajo
                 dealer = [dealer_visible, carta_respaldo]  # lo que ve el jugador mientras juega su mano
 
-                print("\n=== Mano inicial ===")
+                print("\n=== Inicio de la ronda ===")
 
                 # Dealer muestra carta normal + oculta al lado
                 print("Dealer:")
@@ -220,7 +225,7 @@ def menu():
             return
         case _:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("No has ingresado una opción válida. Recuerda usar solo minúsculas y números.\nPresiona ENTER para continuar.")
+            print("No has ingresado una opción válida. Recuerda usar solo minúsculas y números.\n\nPresiona ENTER para volver al menú principal.")
             input()
             menu()
 menu()

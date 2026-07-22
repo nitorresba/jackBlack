@@ -1,0 +1,12 @@
+El objetivo del juego es llegar a un valor sumado de 21 o el valor mas cercano sin pasarse, pasar de 22 es una perdida automatica.
+Los valores de las cartas siguen el numero asignado de 2 a 10,
+los aces valen por 1 u 11, a conveniencia de no pasarse de 21 en el momento,
+y los jacks, reinas y reyes valen por 10 cada uno
+En caso de un empate, se le devuelve el dinero apostado al jugador.
+Al inicio de cada ronda, el jugador escoge cuanto de su saldo piensa apostar y toma dos cartas de una baraja tradicional de poker (sin jokers)
+y el dealer toma dos cartas, aunque el jugador solo puede ver la primera inicialmente.
+Si en esta mano inicial alguno de los dos llega a 21 exactamente, el juego es ganado automaticamente.
+Despues de recibir su mano inicial, el jugador tiene el primer turno y puede decidir entre pedir otra carta para intentar subir el valor, o plantarse y
+jugar con el valor de la mano inicial. Seguido a esto, el dealer debe buscar plantarse con un valor de al menos 17.
+Al acabar la ronda, el jugador puede decidir si seguir jugando mas rondas o retirarse para conservar su puntaje.
+El puntaje es calculado con el saldo final del jugador.

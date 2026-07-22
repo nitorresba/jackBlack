@@ -1,5 +1,5 @@
-Nicolas,8000
-Gustavo Petro,1500
-cyber cp,1050
-javier,1005
-Juan,975
+Gustavo,8000
+Ismael,1500
+Abelardo,1050
+Federico,1005
+Esperanza,975
