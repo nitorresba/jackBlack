@@ -162,7 +162,7 @@ def menu():
     print("\nIngresa una de las siguientes opciones:")
     opcion = input("\nReglas\nJugar\nSalir\n\n")
     match opcion:
-        case "reglas":
+        case "Reglas":
             os.system('cls' if os.name == 'nt' else 'clear')
             with open("reglas.txt", "r") as reglas:
                 texto = reglas.read()
@@ -170,7 +170,7 @@ def menu():
             print("\nPresiona ENTER para volver al menú principal.")
             input()
             menu()
-        case "jugar":
+        case "Jugar":
             os.system('cls' if os.name == 'nt' else 'clear')
             saldo = 1000
             print(f"Empiezas con ${saldo} en fichas.\n")
@@ -220,7 +220,7 @@ def menu():
                     guardar_puntaje(nombre, saldo)
                     webbrowser.open("https://youtu.be/41O_MydqxTU?si=_Q7YfHNm2PKNGFnjju")
                     break
-        case "salir":
+        case "Salir":
             os.system('cls' if os.name == 'nt' else 'clear')
             return
         case _:
